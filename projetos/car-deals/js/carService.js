@@ -1,4 +1,4 @@
-define(['./template.js', './clientStorage.js'], function(template, clientStorage){
+define(['./template.js', './clientStorage.js'], function(template, clientStorage) {
     var apiUrlPath = 'https://bstavroulakis.com/pluralsight/courses/progressive-web-apps/service/';
     var apiUrlLatest = apiUrlPath + 'latest-deals.php';
     var apiUrlCar = apiUrlPath + 'car.php?carId=';
@@ -8,7 +8,7 @@ define(['./template.js', './clientStorage.js'], function(template, clientStorage
         .then(function(status){
             document.getElementById("connection-status").innerHTML = status;
             loadMore();
-        })
+        });
     }
 
     function fetchPromise(){
@@ -37,13 +37,13 @@ define(['./template.js', './clientStorage.js'], function(template, clientStorage
 
     function loadCarPage(carId){
         fetch(apiUrlCar + carId)
-        .then(function(response){
+        .then(function (response){
             return response.text();
-        }).then(function(data){
+        }).then(function (data){
             document.body.insertAdjacentHTML('beforeend', data);
         }).catch(function(){
-            alert("Oops, can't retrieve page");
-        })
+            alert("Oops, can't retrieved page");
+        });
     }
 
     function preCacheDetailsPage(car){
@@ -59,7 +59,7 @@ define(['./template.js', './clientStorage.js'], function(template, clientStorage
 
     return {
         loadMoreRequest: loadMoreRequest,
-        loadCarPage: loadCarPage
+        loadCarPage: loadCarPage,
+        loadMore: loadMore
     }
-
 });

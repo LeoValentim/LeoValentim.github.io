@@ -1,0 +1,1 @@
+PATH=$PATH:/c/Users/CHANGE_WITH_YOUR_USERNAME/AppData/Roaming/npm
