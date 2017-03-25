@@ -11,6 +11,7 @@ define([], function() {
                 console.log('Resolved at installing: ', swRegistration);
                 serviceWorker = swRegistration.installing;
             } else if (swRegistration.waiting){
+                
                 console.log('Resolved at installed/waiting: ', swRegistration);
                 serviceWorker = swRegistration.waiting;
             } else if (swRegistration.active){
@@ -24,9 +25,24 @@ define([], function() {
                 });
             }
 
+            swRegistration.addEventListener('updatefound', function(e){
+                swRegistration.installing.addEventListener('statechange', function(e){
+                    console.log('New service worker state: ', e.target.state);
+                });
+                console.log('New service worker found!', swRegistration);
+            });
+
+            setInterval(function(){
+                swRegistration.update();
+            }, 5000);
+
         }).catch(function(error){
             console.log('Error occurred', error);
         });
+
+        navigator.serviceWorker.addEventListener('controllerchange', function(e){
+            console.log('Controller Changed!');
+        })
     }
 
 });
