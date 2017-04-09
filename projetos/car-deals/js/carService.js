@@ -8,7 +8,7 @@ define(['./template.js', './clientStorage.js'], function(template, clientStorage
         .then(function(status){
             document.getElementById("connection-status").innerHTML = status;
             loadMore();
-        });
+        })
     }
 
     function fetchPromise(){
@@ -26,7 +26,7 @@ define(['./template.js', './clientStorage.js'], function(template, clientStorage
                 resolve("No connection, showing offline results");
             });
             setTimeout(function(){resolve("The connection is hanging, showing offline results");}, 3000);
-        });
+        })
     }
 
     function loadMore(){
@@ -43,7 +43,7 @@ define(['./template.js', './clientStorage.js'], function(template, clientStorage
             document.body.insertAdjacentHTML('beforeend', data);
         }).catch(function(){
             alert("Oops, can't retrieved page");
-        });
+        })
     }
 
     function preCacheDetailsPage(car){
@@ -59,7 +59,6 @@ define(['./template.js', './clientStorage.js'], function(template, clientStorage
 
     return {
         loadMoreRequest: loadMoreRequest,
-        loadCarPage: loadCarPage,
-        loadMore: loadMore
+        loadCarPage: loadCarPage
     }
 });

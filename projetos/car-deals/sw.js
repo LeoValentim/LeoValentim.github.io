@@ -49,7 +49,7 @@ self.addEventListener('activate', function(event){
                 if(cacheKeys[i] != carDealsCacheName &&
                     cacheKeys[i] != carDealsCachePagesName &&
                     cacheKeys[i] != carDealsCacheImagesName){
-                        deletePromises.push(caches,delete(cacheKeys[i]));
+                        deletePromises.push(caches.delete(cacheKeys[i]));
                     }
             }
             return Promise.all(deletePromises);
@@ -62,12 +62,20 @@ self.addEventListener('fetch', function(event){
     var requestPath = requestUrl.pathname;
     var fileName = requestPath.substring(requestPath.lastIndexOf('/') + 1);
 
-    if(requestPath == latestPath || fileName == 'sw.js'){
+    if(requestPath == latestPath || fileName == "sw.js"){
         event.respondWith(fetch(event.request));
     } else if (requestPath == imagePath){
         event.respondWith(networkFirstStrategy(event.request));
+    } else {
+        event.respondWith(cacheFirstStrategy(event.request));
     }
 });
+
+function cacheFirstStrategy(request){
+    return caches.match(request).then(function(cacheResponse){
+        return cacheResponse || fetchRequestAndCache(request);
+    });
+}
 
 function networkFirstStrategy(request){
     return fetchRequestAndCache(request).catch(function(response){
@@ -96,3 +104,7 @@ function getCacheName(request){
         return carDealsCacheName;
     }
 }
+
+self.addEventListener('message', function(event){
+    event.source.postMessage({clientId:event.source.id, message:'sw'});
+});

@@ -2,7 +2,7 @@ define([], function() {
     
     if('serviceWorker' in navigator){
         navigator.serviceWorker
-        .register('sw.js')
+        .register('sw.js', {scope:''})
         .then(function(swRegistration){
             
             var serviceWorker;
@@ -43,6 +43,16 @@ define([], function() {
         navigator.serviceWorker.addEventListener('controllerchange', function(e){
             console.log('Controller Changed!');
         })
+        
+        navigator.serviceWorker.addEventListener('message', function(event){
+            var clientId = event.data.clientId;
+            var message = event.data.message;
+            console.log('From Client: ', clientId, message);
+        });
+
+        if(navigator.serviceWorker.controller != null){
+            navigator.serviceWorker.controller.postMessage('hello');
+        }
     }
 
 });
