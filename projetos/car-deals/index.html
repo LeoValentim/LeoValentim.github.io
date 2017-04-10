@@ -44,7 +44,13 @@
             <header class="mdl-layout__header">
                 <div class="mdl-layout__header-row">
                     <span class="mdl-layout-title">Car Deals</span>
-                    <div class="mdl-layout-spacer"></div>
+                    <div class="mdl-layout-spacer">
+                        <button 
+                        onclick="notifyMe()"
+                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-js-ripple-effect">
+                            Send Push
+                        </button>
+                    </div>
                     <nav class="mdl-navigation">
                         <button 
                         onclick="location.reload()"
@@ -94,6 +100,33 @@
 
         <script>
             System.import('./js/app.js');
+            
+            // request permission on page load
+            document.addEventListener('DOMContentLoaded', function () {
+            if (!Notification) {
+                alert('Desktop notifications not available in your browser. Try Chromium.'); 
+                return;
+            }
+
+            if (Notification.permission !== "granted")
+                Notification.requestPermission();
+            });
+
+            function notifyMe() {
+            if (Notification.permission !== "granted")
+                Notification.requestPermission();
+            else {
+                var notification = new Notification('Teste', {
+                icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
+                body: "Teste. Notificação.",
+                });
+
+                notification.onclick = function () {
+                    window.open("http://stackoverflow.com/a/13328397/1269037");      
+                };
+
+            }
+            }
         </script>
     </body>
 </html>
